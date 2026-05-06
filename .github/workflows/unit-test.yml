@@ -1,0 +1,30 @@
+name: Python CI # Display name for this GitHub Actions workflow
+
+# Declare events (run codes when events are triggered)
+on:
+  push: # Run the workflow when code is pushed
+    branches: [main] # Limit push runs to the main branch
+  pull_request: # Run the workflow when a pull request is opened or updated
+    branches: [main] # Limit pull request runs to the main branch
+
+# Define the job that will execute the test pipeline
+jobs:
+  test: 
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner provided by GitHub
+
+    steps:
+      - name: Checkout code # Label for the step that downloads repository code
+        uses: actions/checkout@v2 # Clone the repository into the runner workspace
+
+      - name: Set up Python # Label for the step that prepares Python
+        uses: actions/setup-python@v2 # Install and configure Python on the runner
+        with:
+          python-version: "3.12" # Specify the Python version to use
+
+      - name: Install dependencies # Label for the step that installs project packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt 
+
+      - name: Run tests # Label for the step that executes the automated tests
+        run: pytest # Run the test suite with pytest
